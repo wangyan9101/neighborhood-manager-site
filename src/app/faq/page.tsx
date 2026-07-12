@@ -5,6 +5,7 @@ import { faqItems } from "@/content/site";
 export const metadata: Metadata = {
   title: "常见问题",
   description: "关于《小区经理》的游戏类型、开发状态、平台计划与项目定位。",
+  alternates: { canonical: "/faq" },
 };
 
 export default function FaqPage() {

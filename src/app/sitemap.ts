@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { publicConfig } from "@/lib/config";
+import { devlogs } from "@/content/devlogs";
 
-const routes = ["", "/game", "/facilities", "/devlog", "/media", "/play", "/about", "/faq"];
+const routes = ["", "/game", "/facilities", "/devlog", "/press", "/play", "/about", "/faq", ...devlogs.map(post => `/devlog/${post.slug}`)];
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return routes.map((route, index) => ({

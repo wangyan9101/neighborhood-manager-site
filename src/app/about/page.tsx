@@ -5,6 +5,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 export const metadata: Metadata = {
   title: "关于作者",
   description: "了解《小区经理》个人开发项目的创作目标、技术方向与范围原则。",
+  alternates: { canonical: "/about" },
 };
 
 export default function AboutPage() {
@@ -13,7 +14,7 @@ export default function AboutPage() {
       <PageHero
         eyebrow="关于作者"
         title="一个人，慢慢把一座小区做出来"
-        description="《小区经理》由个人开发者利用业余时间制作。项目同时是一款独立游戏、一份技术作品集，也是一场面向社区运维仿真的长期探索。"
+        description="我是一个从事 Unity、3D 和数字孪生方向开发的程序员。《小区经理》是我独立制作的一款社区运营模拟经营游戏。"
         aside={
           <div className="mini-stat-card">
             <strong>每周约两天</strong>
@@ -27,7 +28,7 @@ export default function AboutPage() {
             <SectionHeading
               eyebrow="为什么做它"
               title="因为社区运营既有系统，也有人情"
-              description="住宅小区是许多人每天经过、却很少从运营视角观察的空间。电梯、停车和快递看似普通，背后却连接着成本、秩序、安全与信任。"
+              description="我希望把熟悉的运维、设施和社区管理题材，转化为一个轻松、有选择、有反馈的模拟经营体验。目标不是一开始就做成庞大的城市模拟系统，而是先完成一款玩法清晰、可以持续迭代并最终上线 Steam 的独立游戏。"
             />
           </div>
           <blockquote className="about-quote">

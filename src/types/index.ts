@@ -1,22 +1,22 @@
 export type Facility = {
-  slug: string;
+  id: string;
   name: string;
-  icon: string;
-  summary: string;
+  shortDescription: string;
   description: string;
-  focus: string[];
-  event: string;
-  tone: "green" | "blue" | "orange";
+  commonEvents: string[];
+  metrics: string[];
+  icon: "elevator" | "parking" | "locker" | "camera" | "playground" | "charging";
+  gradient: string;
 };
 
 export type Devlog = {
   slug: string;
-  issue: string;
   title: string;
   date: string;
-  status: string;
-  excerpt: string;
-  highlights: string[];
+  summary: string;
+  cover: string;
+  tags: string[];
+  content: string[];
 };
 
 export type NavigationItem = {

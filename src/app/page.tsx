@@ -1,223 +1,56 @@
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { CommunityScene } from "@/components/home/community-scene";
+import { ArrowRight, CalendarDays, CheckCircle2 } from "lucide-react";
 import { ScreenshotPlaceholder } from "@/components/home/screenshot-placeholder";
 import { FacilityCard } from "@/components/game/facility-card";
 import { LinkButton } from "@/components/ui/link-button";
+import { MotionReveal } from "@/components/ui/motion-reveal";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { SteamWishlistButton } from "@/components/ui/steam-wishlist-button";
 import { devlogs } from "@/content/devlogs";
 import { facilities } from "@/content/facilities";
-import {
-  accessCards,
-  coreLoop,
-  roadmap,
-  screenshotSlots,
-  sellingPoints,
-  siteContent,
-} from "@/content/site";
-import { getExternalLink } from "@/lib/config";
+import { coreLoop, screenshotSlots, sellingPoints, siteContent } from "@/content/site";
 import { formatChineseDate } from "@/lib/utils";
 
+const CommunityScene = dynamic(() => import("@/components/home/community-scene").then(m => m.CommunityScene), { loading: () => <div className="community-scene scene-fallback"><span>正在搭建社区沙盘…</span></div> });
+
 export default function Home() {
-  const latestLog = devlogs[0];
-
-  return (
-    <>
-      <section className="home-hero">
-        <div className="page-shell hero-grid">
-          <div className="hero-copy">
-            <p className="hero-badge">
-              <span />
-              {siteContent.stage}
-            </p>
-            <h1>
-              管好一座小区，
-              <em>也照顾这里的生活。</em>
-            </h1>
-            <p className="hero-tagline">{siteContent.tagline}</p>
-            <p className="hero-description">{siteContent.description}</p>
-            <div className="button-row">
-              <LinkButton href="/game">认识这款游戏</LinkButton>
-              <LinkButton href="/devlog" variant="secondary">
-                查看开发进度
-              </LinkButton>
-            </div>
-            <ul className="hero-facts" aria-label="项目概览">
-              <li>
-                <strong>6 类</strong>
-                首批设施关注
-              </li>
-              <li>
-                <strong>3 项</strong>
-                核心运营取舍
-              </li>
-              <li>
-                <strong>多端</strong>
-                Unity 探索方向
-              </li>
-            </ul>
-          </div>
-          <CommunityScene />
+  return <>
+    <section className="home-hero">
+      <div className="hero-orb orb-one" /><div className="hero-orb orb-two" />
+      <div className="page-shell hero-grid">
+        <div className="hero-copy">
+          <p className="hero-badge"><span />{siteContent.stage}</p>
+          <h1>当一天小区经理，<em>才知道物业有多难。</em></h1>
+          <p className="hero-tagline">{siteContent.tagline}</p><p className="hero-description">{siteContent.description}</p>
+          <div className="tag-row" aria-label="游戏标签">{["轻量模拟经营","社区运营","单机游戏","独立开发"].map(tag => <span key={tag}>{tag}</span>)}</div>
+          <div className="button-row"><SteamWishlistButton /><LinkButton href="/game" variant="secondary">查看游戏玩法 <ArrowRight size={17} /></LinkButton><LinkButton href="/devlog" variant="ghost">查看开发日志</LinkButton></div>
+          <ul className="hero-facts" aria-label="游戏概览">{[["6 类","社区设施"],["8+","随机事件"],["5 天","经营挑战"],["多种","运营结局"]].map(([v,l]) => <li key={l}><strong>{v}</strong>{l}</li>)}</ul>
         </div>
-      </section>
+        <CommunityScene />
+      </div>
+    </section>
 
-      <section className="section">
-        <div className="page-shell">
-          <SectionHeading
-            eyebrow="为什么值得管理"
-            title="熟悉的社区，处处都是经营选择"
-            description="这里没有冷冰冰的数字堆砌。每个设备状态、每次投诉和每笔预算，都会回到居民真实的日常感受。"
-          />
-          <div className="selling-grid">
-            {sellingPoints.map((point) => (
-              <article className="selling-card" key={point.title}>
-                <span className="selling-icon" aria-hidden="true">
-                  {point.icon}
-                </span>
-                <h3>{point.title}</h3>
-                <p>{point.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+    <section className="section"><div className="page-shell"><SectionHeading eyebrow="核心卖点" title="这不是简单收物业费的游戏" description="每一次投诉、派工和维修都会改变社区状态，也会挤占下一次选择的空间。" />
+      <div className="selling-grid">{sellingPoints.map((point,i) => <MotionReveal key={point.title}><article className="selling-card"><span className="selling-number">0{i+1}</span><span className="selling-icon">{point.icon}</span><h3>{point.title}</h3><p>{point.description}</p></article></MotionReveal>)}</div>
+    </div></section>
 
-      <section className="section section-tint">
-        <div className="page-shell">
-          <SectionHeading
-            eyebrow="核心玩法循环"
-            title="一天不长，但要操心的事不少"
-            description="从发现问题到复盘结果，构成一段清晰、可重复又不断变化的社区运营节奏。"
-          />
-          <ol className="loop-grid">
-            {coreLoop.map((item) => (
-              <li key={item.step}>
-                <span>{item.step}</span>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
+    <section className="section section-tint"><div className="page-shell"><SectionHeading eyebrow="核心玩法循环" title="每天五步，问题从不重复" description="从巡检到结算，清楚的节奏里藏着不断变化的资源取舍。" />
+      <ol className="loop-grid">{coreLoop.map(item => <li key={item.step}><span>{item.step}</span><h3>{item.title}</h3><p>{item.description}</p></li>)}</ol>
+    </div></section>
 
-      <section className="section">
-        <div className="page-shell">
-          <div className="heading-with-action">
-            <SectionHeading
-              eyebrow="设施系统"
-              title="六类设施，六种社区难题"
-              description="先从居民每天都会接触的设施开始，把范围控制在小而完整的可玩闭环。"
-            />
-            <LinkButton href="/facilities" variant="ghost">
-              查看设施详情
-            </LinkButton>
-          </div>
-          <div className="facility-grid">
-            {facilities.map((facility) => (
-              <FacilityCard facility={facility} key={facility.slug} />
-            ))}
-          </div>
-        </div>
-      </section>
+    <section className="section"><div className="page-shell"><div className="heading-with-action"><SectionHeading eyebrow="设施系统" title="六类设施，六种社区难题" description="设施不是被动数字，它们会制造事件、消耗预算，也影响居民对你的信任。" /><LinkButton href="/facilities" variant="ghost">探索全部设施 <ArrowRight size={17} /></LinkButton></div>
+      <div className="facility-grid">{facilities.map(f => <FacilityCard facility={f} key={f.id} />)}</div>
+    </div></section>
 
-      <section className="section section-dark">
-        <div className="page-shell">
-          <SectionHeading
-            eyebrow="游戏画面"
-            title="让每个界面都像小区里的一扇窗"
-            description="以下区域为真实的截图占位，不代表游戏已经完成。后续会逐步替换为 Unity 实机画面。"
-          />
-          <div className="screenshot-grid">
-            {screenshotSlots.map((slot, index) => (
-              <ScreenshotPlaceholder key={slot.label} {...slot} index={index} />
-            ))}
-          </div>
-        </div>
-      </section>
+    <section className="section section-dark"><div className="page-shell"><SectionHeading eyebrow="游戏画面" title="把复杂运营，装进清楚好读的界面" description="以下为统一风格的布局占位，不代表最终美术质量；真实 Unity 画面将在完成后替换。" />
+      <div className="screenshot-grid">{screenshotSlots.map((slot,i) => <ScreenshotPlaceholder key={slot.label} {...slot} index={i} />)}</div>
+    </div></section>
 
-      <section className="section progress-section">
-        <div className="page-shell progress-grid">
-          <SectionHeading
-            eyebrow="开发进度"
-            title="两天一周，也要把每一步走完整"
-            description="这是个人开发项目。当前优先完成可以被理解、被体验、也能继续扩展的小型原型，不承诺未经验证的上线日期。"
-          />
-          <ol className="roadmap-list">
-            {roadmap.map((item, index) => (
-              <li key={item.title} className={index === 0 ? "is-current" : ""}>
-                <span className="roadmap-dot" />
-                <div>
-                  <p>{item.state}</p>
-                  <h3>{item.title}</h3>
-                  <span>{item.description}</span>
-                </div>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
+    <section className="section"><div className="page-shell"><SectionHeading eyebrow="开发日志" title="一款独立游戏，是怎样慢慢长出来的" description="记录真实进度、设计判断和下一步计划，不承诺未经验证的日期。" />
+      <div className="devlog-card-grid">{devlogs.map(log => <article className={`devlog-card cover-${log.cover}`} key={log.slug}><div className="devlog-cover"><span>DEVLOG</span></div><div className="devlog-card-body"><p className="devlog-meta"><CalendarDays size={15} />{formatChineseDate(log.date)}</p><h3><Link href={`/devlog/${log.slug}`}>{log.title}</Link></h3><p>{log.summary}</p><div className="chip-list">{log.tags.map(t => <span key={t}>{t}</span>)}</div><Link className="text-link" href={`/devlog/${log.slug}`}>阅读日志 <ArrowRight size={16} /></Link></div></article>)}</div>
+    </div></section>
 
-      <section className="section section-tint">
-        <div className="page-shell devlog-feature">
-          <div>
-            <p className="eyebrow">最新开发日志</p>
-            <p className="devlog-meta">
-              {latestLog.issue} · {formatChineseDate(latestLog.date)}
-            </p>
-            <h2>{latestLog.title}</h2>
-            <p>{latestLog.excerpt}</p>
-            <LinkButton href="/devlog" variant="secondary">
-              阅读开发记录
-            </LinkButton>
-          </div>
-          <div className="devlog-note" aria-label="本期开发重点">
-            <span>本期重点</span>
-            <ul>
-              {latestLog.highlights.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section className="section access-section">
-        <div className="page-shell">
-          <SectionHeading
-            eyebrow="从这里继续"
-            title="游戏、试玩与智慧运营实验"
-            description="入口只在真实地址配置后开放；未开放的服务不会跳转到虚假页面。"
-            align="center"
-          />
-          <div className="access-grid">
-            {accessCards.map((card) => {
-              const url = getExternalLink(card.key);
-              const localPlay = card.key === "webgl" && !url ? "/play" : undefined;
-              return (
-                <article key={card.key}>
-                  <p className="card-kicker">{card.eyebrow}</p>
-                  <h3>{card.title}</h3>
-                  <p>{card.description}</p>
-                  {url ? (
-                    <LinkButton href={url} external variant="secondary">
-                      立即前往
-                    </LinkButton>
-                  ) : localPlay ? (
-                    <LinkButton href={localPlay} variant="secondary">
-                      查看试玩计划
-                    </LinkButton>
-                  ) : (
-                    <LinkButton variant="secondary">敬请期待</LinkButton>
-                  )}
-                </article>
-              );
-            })}
-          </div>
-          <p className="access-note">
-            想先了解范围？<Link href="/faq">查看常见问题</Link>
-          </p>
-        </div>
-      </section>
-    </>
-  );
+    <section className="final-cta"><div className="building-silhouette" /><div className="page-shell final-cta-inner"><div><p className="eyebrow">Steam 愿望单</p><h2>准备好接管这个小区了吗？</h2><p>商店页面正在准备中。先把这里收藏起来，或者从开发日志了解最新进度。</p></div><div className="button-row"><SteamWishlistButton /><LinkButton href="/devlog" variant="secondary"><CheckCircle2 size={17} />关注开发进度</LinkButton></div></div></section>
+  </>;
 }

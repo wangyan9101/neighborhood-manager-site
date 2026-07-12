@@ -1,4 +1,4 @@
-const FALLBACK_SITE_URL = "http://localhost:3000";
+const FALLBACK_SITE_URL = "https://neighborhood-manager.example.com";
 
 function parseHttpUrl(value: string | undefined): string | undefined {
   const normalized = value?.trim();

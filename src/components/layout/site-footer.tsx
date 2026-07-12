@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { navigation, siteContent } from "@/content/site";
+import { Building2 } from "lucide-react";
 
 export function SiteFooter() {
   return (
@@ -7,9 +8,7 @@ export function SiteFooter() {
       <div className="page-shell footer-grid">
         <div>
           <Link className="brand footer-brand" href="/">
-            <span className="brand-mark" aria-hidden="true">
-              区
-            </span>
+            <span className="brand-mark" aria-hidden="true"><Building2 size={22} /></span>
             <span>
               <strong>{siteContent.name}</strong>
               <small>{siteContent.englishName}</small>
@@ -32,7 +31,7 @@ export function SiteFooter() {
         <div>
           <p className="footer-title">项目</p>
           <nav className="footer-links" aria-label="项目导航">
-            <Link href="/play">WebGL 试玩</Link>
+            <Link href="/press">媒体资料</Link>
             <Link href="/about">关于作者</Link>
             <Link href="/faq">常见问题</Link>
           </nav>

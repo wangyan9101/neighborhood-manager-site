@@ -14,14 +14,30 @@ export default function Icon() {
           alignItems: "center",
           justifyContent: "center",
           borderRadius: 18,
-          color: "white",
           background: "#2f7d64",
           boxShadow: "inset 0 -7px 0 #235e4d",
-          fontSize: 34,
-          fontWeight: 800,
+          gap: 5,
         }}
       >
-        区
+        <div
+          style={{
+            width: 15,
+            height: 31,
+            display: "flex",
+            borderRadius: 3,
+            background: "white",
+          }}
+        />
+        <div
+          style={{
+            width: 15,
+            height: 23,
+            display: "flex",
+            marginTop: 8,
+            borderRadius: 3,
+            background: "#f5c66a",
+          }}
+        />
       </div>
     ),
     size,

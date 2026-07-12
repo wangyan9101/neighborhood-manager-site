@@ -10,10 +10,13 @@
 - React 19
 - TypeScript
 - Tailwind CSS 4
+- Three.js / React Three Fiber / Drei
+- Framer Motion
+- Lucide React
 - ESLint
 - pnpm 11
 
-页面默认使用 Server Component。当前移动导航、FAQ 等交互依赖原生 HTML 能力，没有引入客户端状态库或第三方 UI 组件库。
+页面默认使用 Server Component，Three.js、导航、页面过渡和 Steam 友好提示封装在小型 Client Component 边界内，没有引入大型 UI 框架。
 
 ## 环境要求
 
@@ -30,6 +33,13 @@ corepack enable
 corepack prepare pnpm@11.11.0 --activate
 pnpm --version
 ```
+
+```
+pnpm.cmd --version
+pnpm.cmd install
+pnpm.cmd dev
+```
+
 
 如果系统没有 Corepack，可参考 [pnpm 官方安装说明](https://pnpm.io/installation)。
 
@@ -59,6 +69,7 @@ pnpm dev
 
 ```bash
 pnpm lint
+pnpm typecheck
 pnpm build
 pnpm start
 ```
@@ -91,8 +102,8 @@ docker run --rm -p 3000:3000 --env-file .env.local neighborhood-manager-site
 
 | 变量 | 用途 | 未设置时的行为 |
 | --- | --- | --- |
-| `NEXT_PUBLIC_SITE_URL` | 官网公开地址，用于 Metadata、robots 和 sitemap | 使用 `http://localhost:3000` |
-| `NEXT_PUBLIC_STEAM_URL` | Steam 商店页 | 按钮显示“敬请期待” |
+| `NEXT_PUBLIC_SITE_URL` | 官网公开地址，用于 Metadata、robots 和 sitemap | 使用示例域名 `https://neighborhood-manager.example.com` |
+| `NEXT_PUBLIC_STEAM_URL` | Steam 商店页 | 展示“商店页面正在准备中”的提示，不发生跳转 |
 | `NEXT_PUBLIC_CHAT_URL` | 智慧运营 Chat | 按钮显示“敬请期待” |
 | `NEXT_PUBLIC_WEBGL_URL` | Unity WebGL 试玩地址 | 引导至站内 `/play` 占位页 |
 | `NEXT_PUBLIC_API_BASE_URL` | 未来 FastAPI 地址 | 当前不发起任何 API 请求 |
@@ -106,8 +117,10 @@ docker run --rm -p 3000:3000 --env-file .env.local neighborhood-manager-site
 | `/` | 首页：定位、卖点、玩法循环、设施、截图占位、进度、日志和入口 |
 | `/game` | 游戏背景、核心循环、经营指标与多平台方向 |
 | `/facilities` | 六类首批设施及示例事件 |
-| `/devlog` | 可确认的开发记录 |
-| `/media` | 媒体资料状态、项目事实与使用说明 |
+| `/devlog` | 三篇可确认的开发记录 |
+| `/devlog/[slug]` | 日志正文、上一篇和下一篇导航 |
+| `/press` | 游戏事实表、媒体资料与 Press Kit 占位 |
+| `/media` | 兼容旧链接，重定向到 `/press` |
 | `/play` | WebGL 试玩预留页 |
 | `/about` | 作者、创作目标和开发边界 |
 | `/faq` | 游戏状态、平台与项目定位的常见问题 |
@@ -126,6 +139,23 @@ src/
 ```
 
 主题颜色、圆角、阴影和页面宽度统一定义在 `src/app/globals.css` 顶部的 CSS 变量中。主要文案与设施数据位于 `src/content`，便于后续维护。
+
+## Steam、域名与素材替换
+
+- Steam 商店链接：在 `.env.local` 设置 `NEXT_PUBLIC_STEAM_URL`，统一读取位置为 `src/lib/config.ts`。
+- 正式域名：在 `.env.local` 设置 `NEXT_PUBLIC_SITE_URL`；SEO、robots 与 sitemap 会同步更新。
+- 品牌资源：`src/assets/brand`。
+- 设施图标：`src/assets/icons`（当前使用 Lucide React）。
+- 游戏截图：`src/assets/screenshots`。
+- Press Kit：`src/assets/press` 与 `public/downloads`。
+
+## Three.js 性能与降级
+
+首页微缩社区只使用基础几何体，无外部模型、纹理或后期处理。Canvas 采用正交相机、`dpr={[1, 1.35]}` 和 `performance={{ min: 0.5 }}`；页面失焦时暂停场景更新，`prefers-reduced-motion` 下停止自动旋转与视差。Canvas 设置 `pointer-events: none`，不会阻挡滚动和按钮。WebGL 初始化失败时由错误边界切换到 CSS 渐变占位。
+
+## 部署
+
+Vercel 为首选，仓库中的 `vercel.json` 使用 Next.js 原生路由，不需要 SPA rewrite。Cloudflare Pages 可使用 Next.js 适配器。GitHub Pages 设置 `DEPLOY_TARGET=github-pages` 后会启用 `basePath`、静态导出和资源前缀；该配置不会影响 Vercel 默认部署。
 
 ## 后续接入位置
 

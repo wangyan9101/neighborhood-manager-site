@@ -7,6 +7,7 @@ import { facilities } from "@/content/facilities";
 export const metadata: Metadata = {
   title: "设施系统",
   description: "查看《小区经理》首批关注的电梯、停车场、快递柜、摄像头、儿童活动区和充电桩系统。",
+  alternates: { canonical: "/facilities" },
 };
 
 export default function FacilitiesPage() {
@@ -30,9 +31,10 @@ export default function FacilitiesPage() {
             title="每项设施，都可能带来一段故事"
             description="以下事件用于说明玩法方向，不代表这些功能已经完成。"
           />
+          <div className="facility-filter" aria-label="设施分类筛选说明"><span className="is-active">全部设施</span><span>出行</span><span>服务</span><span>安全</span><span>生活</span></div>
           <div className="facility-grid facility-detail-grid">
             {facilities.map((facility) => (
-              <FacilityCard detailed facility={facility} key={facility.slug} />
+              <FacilityCard expandable facility={facility} key={facility.id} />
             ))}
           </div>
         </div>

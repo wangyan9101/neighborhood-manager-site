@@ -8,6 +8,7 @@ import { coreLoop, gameMetrics, sellingPoints } from "@/content/site";
 export const metadata: Metadata = {
   title: "游戏介绍",
   description: "了解《小区经理》的背景、核心玩法循环、运营指标与多平台探索方向。",
+  alternates: { canonical: "/game" },
 };
 
 export default function GamePage() {
@@ -56,6 +57,24 @@ export default function GamePage() {
               </li>
             ))}
           </ol>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="page-shell">
+          <SectionHeading eyebrow="员工与事件" title="把对的人，派到最需要的地方" description="不同员工适合不同事件。匹配员工处理更快，错误派工会浪费宝贵时间。" />
+          <div className="content-grid-three">
+            <article className="content-card"><p className="eyebrow">维修工</p><h3>设备抢修与预防保养</h3><p>擅长电梯、充电桩和快递柜故障，但同一时间只能处理一处设施。</p></article>
+            <article className="content-card"><p className="eyebrow">保安</p><h3>秩序、安全与现场协调</h3><p>适合停车冲突、消防通道和夜间治安事件。</p></article>
+            <article className="content-card"><p className="eyebrow">客服</p><h3>投诉沟通与情绪缓冲</h3><p>能更快稳定居民情绪，为后续处理争取时间。</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-tint">
+        <div className="page-shell content-grid-two">
+          <article className="content-card"><p className="eyebrow">胜利条件</p><h2>撑过五天经营挑战</h2><p>在预算没有耗尽的前提下，维持基本满意度和设施健康，完成阶段运营目标。</p></article>
+          <article className="content-card"><p className="eyebrow">失败条件</p><h2>每一次积压都会留下后果</h2><p>预算归零、关键设施长期瘫痪或满意度持续跌破底线，都可能提前结束本局。</p></article>
         </div>
       </section>
 

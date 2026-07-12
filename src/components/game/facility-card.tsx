@@ -1,35 +1,28 @@
+import { BatteryCharging, Boxes, Camera, CarFront, CircleParking, Dumbbell, Gauge, PackageOpen } from "lucide-react";
 import type { Facility } from "@/types";
 
-type FacilityCardProps = {
-  facility: Facility;
-  detailed?: boolean;
+const icons = {
+  elevator: Boxes,
+  parking: CircleParking,
+  locker: PackageOpen,
+  camera: Camera,
+  playground: Dumbbell,
+  charging: BatteryCharging,
 };
 
-export function FacilityCard({ facility, detailed = false }: FacilityCardProps) {
-  return (
-    <article className={`facility-card tone-${facility.tone}`} id={facility.slug}>
+export function FacilityCard({ facility, expandable = false }: { facility: Facility; expandable?: boolean }) {
+  const Icon = icons[facility.icon];
+  const content = (
+    <>
       <div className="facility-title-row">
-        <span className="facility-icon" aria-hidden="true">
-          {facility.icon}
-        </span>
-        <div>
-          <p className="card-kicker">社区设施</p>
-          <h3>{facility.name}</h3>
-        </div>
+        <span className={`facility-icon gradient-${facility.gradient}`} aria-hidden="true"><Icon size={22} /></span>
+        <div><p className="card-kicker">社区设施</p><h3>{facility.name}</h3></div>
       </div>
-      <p className="facility-summary">{facility.summary}</p>
-      {detailed ? <p>{facility.description}</p> : null}
-      <ul className="chip-list" aria-label={`${facility.name}关注指标`}>
-        {facility.focus.map((item) => (
-          <li key={item}>{item}</li>
-        ))}
-      </ul>
-      {detailed ? (
-        <div className="event-callout">
-          <strong>可能发生的事</strong>
-          <p>{facility.event}</p>
-        </div>
-      ) : null}
-    </article>
+      <p className="facility-summary">{facility.shortDescription}</p>
+      <p>{facility.description}</p>
+      <div className="facility-meta"><span><Gauge size={15} />影响指标</span><ul className="chip-list">{facility.metrics.map((item) => <li key={item}>{item}</li>)}</ul></div>
+      <div className="facility-meta"><span><CarFront size={15} />常见事件</span><ul className="chip-list event-chips">{facility.commonEvents.map((item) => <li key={item}>{item}</li>)}</ul></div>
+    </>
   );
+  return expandable ? <details className="facility-card facility-expand" id={facility.id}><summary><span>{facility.name}</span><small>展开详情</small></summary>{content}</details> : <article className="facility-card" id={facility.id}>{content}</article>;
 }
